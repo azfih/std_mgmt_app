@@ -1,5 +1,4 @@
 <?php
-// Small change to trigger Git push
 
 include 'db.php';
 
