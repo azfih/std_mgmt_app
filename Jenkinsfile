@@ -10,9 +10,15 @@ pipeline {
         checkout scm
       }
     }
+    stage('Clean Environment') {
+      steps {
+        // Forcefully remove any existing containers with the same names
+        sh 'docker rm -f ci_student_web ci_student_db || true'
+        sh "docker-compose -f $COMPOSE_CI -p $PROJECT_NAME down -v || true"
+      }
+    }
     stage('Build & Deploy App') {
       steps {
-        sh "docker-compose -f $COMPOSE_CI -p $PROJECT_NAME down || true"
         sh "docker-compose -f $COMPOSE_CI -p $PROJECT_NAME up -d --build"
       }
     }
@@ -25,7 +31,8 @@ pipeline {
   }
   post {
     always {
-      sh "docker-compose -f $COMPOSE_CI -p $PROJECT_NAME down"
+      sh "docker-compose -f $COMPOSE_CI -p $PROJECT_NAME down -v"
+      sh 'docker rm -f ci_student_web ci_student_db || true'
     }
   }
 }
