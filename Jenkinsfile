@@ -1,36 +1,37 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                echo 'Code already cloned by Jenkins...'
-            }
-        }
+  environment {
+    COMPOSE_CI = 'docker-compose.ci.yml'
+  }
 
-        stage('Build and Start Services') {
-            steps {
-                script {
-                    sh 'docker-compose -f docker-compose.ci.yml up -d --build'
-                }
-            }
-        }
-
-        stage('Test Web App') {
-            steps {
-                script {
-                    sleep 10 // wait for services to boot
-                    sh 'curl -s http://localhost:8080 | grep "Student Management System"'
-                }
-            }
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
     }
 
-    post {
-        always {
-            script {
-                sh 'docker-compose -f docker-compose.ci.yml down'
-            }
-        }
+    stage('Build & Deploy App') {
+      steps {
+        sh "docker-compose -f $COMPOSE_CI down || true"
+        sh "docker-compose -f $COMPOSE_CI up -d --build"
+      }
     }
+
+    stage('Smoke Test') {
+      steps {
+        // Wait for web container to be ready on port 8090
+        sleep 10
+        // Hit the web app, not Jenkins UI
+        sh 'curl -s http://localhost:8090 | grep "Student Management System"'
+      }
+    }
+  }
+
+  post {
+    always {
+      sh "docker-compose -f $COMPOSE_CI down"
+    }
+  }
 }
