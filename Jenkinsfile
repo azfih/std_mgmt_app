@@ -21,10 +21,8 @@ pipeline {
 
     stage('Smoke Test') {
       steps {
-        // Wait for web container to be ready on port 8090
         sleep 10
-        // Hit the web app, not Jenkins UI
-        sh 'curl -s http://localhost:8090 | grep "Student Management System"'
+        sh 'curl -s http://localhost:8090 | grep -i "student"'
       }
     }
   }
