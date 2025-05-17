@@ -4,7 +4,9 @@ services:
     build: .
     container_name: lamp_web_sec
     ports:
-      - "8090:80"
+      - "8090:80"       # map host port 8090 to container port 80
+    volumes:
+      - ./:/var/www/html  # attach current code directory as volume inside container
     depends_on:
       - db
   db:
