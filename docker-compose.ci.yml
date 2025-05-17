@@ -2,16 +2,14 @@ version: '3.8'
 services:
   web:
     build: .
-    container_name: ci_student_web
+    container_name: lamp_web_sec
     ports:
       - "8090:80"
-    volumes:
-      - ./:/var/www/html/
     depends_on:
       - db
   db:
     image: mysql:5.7
-    container_name: ci_student_db
+    container_name: lamp_db_sec
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
