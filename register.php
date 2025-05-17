@@ -1,4 +1,6 @@
 <?php
+// Small change to trigger Git push
+
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
