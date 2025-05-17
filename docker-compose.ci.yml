@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   web:
-    build: ./std_mgmt_app
+    build: .
     container_name: lamp_web
     ports:
-      - "8090:80"      # CI uses 8090 so it won’t collide with 80 from part 1
+      - "8090:80"
     depends_on:
       - db
 
