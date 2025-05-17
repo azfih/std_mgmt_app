@@ -2,10 +2,10 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    build: ./std_mgmt_app
     container_name: lamp_web
     ports:
-      - "8090:80"      # changed from 8080 to 8090
+      - "8090:80"      # CI uses 8090 so it won’t collide with 80 from part 1
     depends_on:
       - db
 
@@ -21,16 +21,5 @@ services:
     volumes:
       - db_data:/var/lib/mysql
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    ports:
-      - "8081:8080"    # Jenkins UI on host:8081
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-    restart: unless-stopped
-
 volumes:
   db_data:
-  jenkins_home:
