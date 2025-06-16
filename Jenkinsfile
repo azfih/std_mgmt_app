@@ -34,7 +34,7 @@ pipeline {
            git branch: 'main', url: 'https://github.com/azfih/std_mgmt_app_testcases.git'
           sh '''
             python3 -m venv selenium-env
-            . selenium-env/bin/activate
+             . selenium-env/bin/activate
             pip install -r requirements.txt
             python3 test_app.py
           '''
