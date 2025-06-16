@@ -31,7 +31,7 @@ pipeline {
     stage('Run Selenium Test Cases') {
       steps {
         dir('test-repo') {
-          git 'https://github.com/azfih/std_mgmt_app_testcases.git'
+           git branch: 'main', url: 'https://github.com/azfih/std_mgmt_app_testcases.git'
           sh '''
             python3 -m venv selenium-env
             source selenium-env/bin/activate
